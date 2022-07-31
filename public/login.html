@@ -1,4 +1,4 @@
-<!--index.html-->
+<!--login.html-->
 
 <!doctype html>
 <html>
@@ -6,52 +6,65 @@
 <head>
     <meta charset="utf-8">
     <title>First Page</title>
-    <!--CSS-->
-    <link rel="stylesheet" href="/jquery-ui/themes/base/jquery-ui.css">
-
-    <!--Javascript-->
-    <script src="/jquery/jquery.min.js"></script>
-    <script src="/jquery-ui/jquery-ui.min.js"></script>
 </head>
 
 <body>
+    <!--put here-->
+    <h1>Hello, Hoola</h1>
+    <!---->
+
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">1-แบบฟอร์มลงทะเบียน</a></li>
-            <li><a href="#tabs-2">2-รายชื่อนิสิต(ALL)</a></li>
-            <li><a href="#tabs-3">3-ข้อมูลนิสิต</a></li>
+            <li><a href="#tabs-1">1-แบบฟอร์มlogin </a></li>
         </ul>
         <div id="tabs-1">
+
             <form id="my-form">
-                <input type="text" id="txtStudentID" name="txtStudentID" placeholder="รหัสนิสิต" />
-                <br/>
-                <input type="text" id="txtName" name="txtName" placeholder="ชื่อ-นามสกุล" />
-                <br/>
                 <input type="text" id="txtEmail" name="txtEmail" placeholder="Email" />
                 <br/>
                 <input type="password" id="txtPassword" name="txtPassword" placeholder="รหัสผ่าน" />
                 <br/>
                 <input type="button" id="btnSubmit" value="Submit" />
             </form>
-
-
         </div>
-        <div id="tabs-2">
-            <button class="ui-button ui-widget ui-corner-all" id="btnRequest">Load</button>
-            <div id="myDynamicTable"></div>
-        </div>
-        <div id="tabs-3">
+        <!-- tabs-->
 
-        </div>
-    </div>
-    <!-- tabs-->
-    <!--put here-->
-    <h1>Hello, Hoola</h1>
-    <!---->
 </body>
 
 </html>
+
+<!--CSS-->
+<link rel="stylesheet" href="/jquery-ui/themes/base/jquery-ui.css">
+
+<!--Javascript-->
+<script src="/jquery/jquery.min.js"></script>
+<script src="/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript">
+    //btnSubmit
+    $('#btnSubmit').click(function() {
+        //console.log("Submit");
+        $.ajax({
+            method: "POST",
+            url: "https://tools.ecpe.nu.ac.th/network/api/login",
+            dataType: 'json',
+            headers: {
+                'Content-Type': 'application/json',
+                "Accepts": "application/json",
+            },
+            data: JSON.stringify({
+                "name": $('#txtName').val(),
+                "student_id": $('#txtStudentID').val(),
+                "email": $('#txtEmail').val(),
+                "password": $('#txtPassword').val()
+            }),
+            success: function(data) {
+                console.log(data);
+
+            }
+        });
+
+    });
+
     $(document).ready(function() {
         console.log("Onload");
 
@@ -61,38 +74,10 @@
                 //console.log(tabIndex);
                 if (tabIndex == 0) {
                     console.log("tabs-1");
-                } else if (tabIndex == 1) {
-                    console.log("tabs-2");
-                } else if (tabIndex == 2) {
-                    console.log("tabs-3");
                 }
             }
         });
 
-        //btnSubmit
-        $('#btnSubmit').click(function() {
-            //console.log("Submit");
-            $.ajax({
-                method: "POST",
-                url: "https://tools.ecpe.nu.ac.th/network/api/register",
-                dataType: 'json',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Accepts": "application/json",
-                },
-                data: JSON.stringify({
-                    "name": $('#txtName').val(),
-                    "student_id": $('#txtStudentID').val(),
-                    "email": $('#txtEmail').val(),
-                    "password": $('#txtPassword').val()
-                }),
-                success: function(data) {
-                    console.log(data);
-
-                }
-            });
-
-        });
         //btnRequest
         $('#btnRequest').click(function() {
             // url from where we want to get the data
@@ -103,7 +88,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                     "Accepts": "application/json",
-                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MTA1NDQyLCJleHAiOjE2NTkxMDkwNDIsIm5iZiI6MTY1OTEwNTQ0MiwianRpIjoiSnJIN2pDMDFYN0h4ektjbCIsInN1YiI6NTUsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.SoSKPiMo_Z61e9UCfgOqMJL2UdXoFLgdUT-VGKXYeP0",
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MTE3MTQxLCJleHAiOjE2NTkxMjA3NDEsIm5iZiI6MTY1OTExNzE0MSwianRpIjoiYjhNSHFSM0psRkU1T3JpcCIsInN1YiI6ODMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.zzNktV9U3eVidZr6Yb5U5qLp4eNDh3K3G8VSvYv9nYc",
                 },
                 success: function(data) {
                     console.log(data);
